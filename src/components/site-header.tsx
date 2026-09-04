@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import { siteNavigation, socialLinks } from './site-data'
+import type { PageContent } from '@/lib/page-data'
 
 function isActivePath(pathname: string, href: string) {
   if (href === '/') {
@@ -15,7 +16,12 @@ function isActivePath(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`)
 }
 
-export function SiteHeader() {
+type SiteHeaderProps = {
+  contact: PageContent
+  intro?: string | null
+}
+
+export function SiteHeader({ contact, intro }: SiteHeaderProps) {
   const pathname = usePathname()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
@@ -104,8 +110,7 @@ export function SiteHeader() {
             </div>
 
             <p className="mt-8 max-w-[44rem] font-serif text-[1.75rem] leading-tight">
-              Goodside is an independent brand design studio creating identities for the products,
-              places, and experiences people fall in love with.
+              {intro}
             </p>
           </div>
 
@@ -132,13 +137,11 @@ export function SiteHeader() {
           <div className="grid justify-items-center gap-10 border-b border-line/70 px-[var(--site-pad)] py-14 text-center font-serif">
             <div>
               <p className="mb-4 text-[1.9rem] italic leading-tight">
-                For business inquiries,
-                <br />
-                collaborations or hellos
+                {contact.contactHeading}
               </p>
 
-              <a className="text-[2rem] leading-tight underline! underline-offset-4" href="mailto:hello@goodside.studio">
-                hello@goodside.studio
+              <a className="text-[2rem] leading-tight underline! underline-offset-4" href={`mailto:${contact.contactEmail}`}>
+                {contact.contactEmail}
               </a>
             </div>
 
@@ -154,7 +157,7 @@ export function SiteHeader() {
             <div>
               <p className="mb-6 text-[1.75rem] italic leading-tight">Follow along</p>
               <div className="flex flex-col items-center text-[1.9rem] leading-tight">
-                {socialLinks.map((item) => (
+                {(contact.socialLinks ?? socialLinks).map((item) => (
                   <a
                     className="underline! underline-offset-4"
                     href={item.href}

@@ -1,25 +1,34 @@
-import { AboutDetails, AboutImageStrip, AboutLists, AboutStory} from '@/components/about-content'
+import { AboutDetails, AboutImageStrip, AboutLists, AboutStory } from '@/components/about-content'
 import { PageKicker } from '@/components/page-kicker'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
+import { getContactPage, getPage } from '@/lib/page-data'
 
 export const metadata = {
   title: 'About → Goodside',
 }
 
-export default function AboutPage() {
+export const dynamic = 'force-dynamic'
+
+export default async function AboutPage() {
+  const [page, home, contact] = await Promise.all([
+    getPage('about'),
+    getPage('home'),
+    getContactPage(),
+  ])
+
   return (
     <>
-      <SiteHeader />
+      <SiteHeader contact={contact} intro={home.heroCopy} />
       <PageKicker
-        copy="Selected identities for restaurants, venture firms, wellness products, climate tools, cultural places, and teams building what comes next."
-        title="Goodside"
+        copy={page.kickerCopy ?? undefined}
+        title={page.kickerTitle ?? page.title}
       />
-      <AboutStory/>
-      <AboutDetails />
-      <AboutLists />
-      <AboutImageStrip />
-      <SiteFooter />
+      <AboutStory page={page} />
+      <AboutDetails page={page} />
+      <AboutLists page={page} />
+      <AboutImageStrip page={page} />
+      <SiteFooter contact={contact} />
     </>
   )
 }

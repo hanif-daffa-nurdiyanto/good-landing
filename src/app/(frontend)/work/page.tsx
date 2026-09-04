@@ -2,21 +2,30 @@ import { PageKicker } from '@/components/page-kicker'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
 import { WorkIndex } from '@/components/work-index'
+import { getContactPage, getPage } from '@/lib/page-data'
 
 export const metadata = {
   title: 'Work → Goodside',
 }
 
-export default function WorkPage() {
+export const dynamic = 'force-dynamic'
+
+export default async function WorkPage() {
+  const [page, home, contact] = await Promise.all([
+    getPage('work'),
+    getPage('home'),
+    getContactPage(),
+  ])
+
   return (
     <>
-      <SiteHeader />
+      <SiteHeader contact={contact} intro={home.heroCopy} />
       <PageKicker
-        copy="Selected identities for restaurants, venture firms, wellness products, climate tools, cultural places, and teams building what comes next."
-        title="Goodside"
+        copy={page.kickerCopy ?? undefined}
+        title={page.kickerTitle ?? page.title}
       />
-      <WorkIndex />
-      <SiteFooter />
+      <WorkIndex projects={page.workProjects ?? []} />
+      <SiteFooter contact={contact} />
     </>
   )
 }

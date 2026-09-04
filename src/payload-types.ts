@@ -87,8 +87,18 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    home: Home;
+    work: Work;
+    about: About;
+    contact: Contact;
+  };
+  globalsSelect: {
+    home: HomeSelect<false> | HomeSelect<true>;
+    work: WorkSelect<false> | WorkSelect<true>;
+    about: AboutSelect<false> | AboutSelect<true>;
+    contact: ContactSelect<false> | ContactSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -314,6 +324,352 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home".
+ */
+export interface Home {
+  id: number;
+  heroLogoUpload?: (number | null) | Media;
+  /**
+   * Fallback external URL. Upload image will be used first when set.
+   */
+  heroLogo?: string | null;
+  heroHeading?: string | null;
+  heroCopy?: string | null;
+  marqueeProjects?:
+    | {
+        title: string;
+        description: string;
+        imageUpload?: (number | null) | Media;
+        /**
+         * Fallback external URL. Upload image will be used first when set.
+         */
+        image?: string | null;
+        href: string;
+        color?: string | null;
+        status?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  manifestoTitle?: string | null;
+  manifestoVideoUpload?: (number | null) | Media;
+  /**
+   * Fallback external URL. Upload video will be used first when set.
+   */
+  manifestoVideo?: string | null;
+  manifestoParagraphs?:
+    | {
+        paragraph: string;
+        id?: string | null;
+      }[]
+    | null;
+  featuredTitle?: string | null;
+  featuredLinkLabel?: string | null;
+  featuredLinkHref?: string | null;
+  featuredProjects?:
+    | {
+        title: string;
+        description: string;
+        imageUpload?: (number | null) | Media;
+        /**
+         * Fallback external URL. Upload image will be used first when set.
+         */
+        image?: string | null;
+        href: string;
+        color?: string | null;
+        status?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "work".
+ */
+export interface Work {
+  id: number;
+  kickerTitle?: string | null;
+  kickerCopy?: string | null;
+  workProjects?:
+    | {
+        title: string;
+        description: string;
+        imageUpload?: (number | null) | Media;
+        /**
+         * Fallback external URL. Upload image will be used first when set.
+         */
+        image?: string | null;
+        href: string;
+        color?: string | null;
+        status?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about".
+ */
+export interface About {
+  id: number;
+  kickerTitle?: string | null;
+  kickerCopy?: string | null;
+  aboutStory?: string | null;
+  aboutCollage?:
+    | {
+        imageUpload?: (number | null) | Media;
+        /**
+         * Fallback external URL. Upload image will be used first when set.
+         */
+        image?: string | null;
+        className: string;
+        id?: string | null;
+      }[]
+    | null;
+  howWeWorkTitle?: string | null;
+  howWeWorkParagraphs?:
+    | {
+        paragraph: string;
+        id?: string | null;
+      }[]
+    | null;
+  services?:
+    | {
+        item: string;
+        id?: string | null;
+      }[]
+    | null;
+  industries?:
+    | {
+        item: string;
+        id?: string | null;
+      }[]
+    | null;
+  clients?:
+    | {
+        item: string;
+        id?: string | null;
+      }[]
+    | null;
+  press?:
+    | {
+        item: string;
+        id?: string | null;
+      }[]
+    | null;
+  imageStripHeadingTop?: string | null;
+  imageStripHeadingEmphasis?: string | null;
+  imageStripHeadingBottom?: string | null;
+  aboutStrip?:
+    | {
+        alt: string;
+        imageUpload?: (number | null) | Media;
+        /**
+         * Fallback external URL. Upload image will be used first when set.
+         */
+        image?: string | null;
+        href?: string | null;
+        objectPosition?: string | null;
+        dark?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact".
+ */
+export interface Contact {
+  id: number;
+  kickerTitle?: string | null;
+  kickerCopy?: string | null;
+  contactHeading?: string | null;
+  contactEmail?: string | null;
+  contactImageUpload?: (number | null) | Media;
+  /**
+   * Fallback external URL. Upload image will be used first when set.
+   */
+  contactImage?: string | null;
+  contactImageAlt?: string | null;
+  socialHeading?: string | null;
+  socialLinks?:
+    | {
+        label: string;
+        href: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home_select".
+ */
+export interface HomeSelect<T extends boolean = true> {
+  heroLogoUpload?: T;
+  heroLogo?: T;
+  heroHeading?: T;
+  heroCopy?: T;
+  marqueeProjects?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        imageUpload?: T;
+        image?: T;
+        href?: T;
+        color?: T;
+        status?: T;
+        id?: T;
+      };
+  manifestoTitle?: T;
+  manifestoVideoUpload?: T;
+  manifestoVideo?: T;
+  manifestoParagraphs?:
+    | T
+    | {
+        paragraph?: T;
+        id?: T;
+      };
+  featuredTitle?: T;
+  featuredLinkLabel?: T;
+  featuredLinkHref?: T;
+  featuredProjects?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        imageUpload?: T;
+        image?: T;
+        href?: T;
+        color?: T;
+        status?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "work_select".
+ */
+export interface WorkSelect<T extends boolean = true> {
+  kickerTitle?: T;
+  kickerCopy?: T;
+  workProjects?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        imageUpload?: T;
+        image?: T;
+        href?: T;
+        color?: T;
+        status?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about_select".
+ */
+export interface AboutSelect<T extends boolean = true> {
+  kickerTitle?: T;
+  kickerCopy?: T;
+  aboutStory?: T;
+  aboutCollage?:
+    | T
+    | {
+        imageUpload?: T;
+        image?: T;
+        className?: T;
+        id?: T;
+      };
+  howWeWorkTitle?: T;
+  howWeWorkParagraphs?:
+    | T
+    | {
+        paragraph?: T;
+        id?: T;
+      };
+  services?:
+    | T
+    | {
+        item?: T;
+        id?: T;
+      };
+  industries?:
+    | T
+    | {
+        item?: T;
+        id?: T;
+      };
+  clients?:
+    | T
+    | {
+        item?: T;
+        id?: T;
+      };
+  press?:
+    | T
+    | {
+        item?: T;
+        id?: T;
+      };
+  imageStripHeadingTop?: T;
+  imageStripHeadingEmphasis?: T;
+  imageStripHeadingBottom?: T;
+  aboutStrip?:
+    | T
+    | {
+        alt?: T;
+        imageUpload?: T;
+        image?: T;
+        href?: T;
+        objectPosition?: T;
+        dark?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact_select".
+ */
+export interface ContactSelect<T extends boolean = true> {
+  kickerTitle?: T;
+  kickerCopy?: T;
+  contactHeading?: T;
+  contactEmail?: T;
+  contactImageUpload?: T;
+  contactImage?: T;
+  contactImageAlt?: T;
+  socialHeading?: T;
+  socialLinks?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

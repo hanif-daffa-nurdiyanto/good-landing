@@ -2,20 +2,24 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import { Reveal } from './reveal'
-import { workProjects } from './site-data'
+import type { ProjectCard } from '@/lib/page-data'
 
-export function WorkIndex() {
+type WorkIndexProps = {
+  projects: ProjectCard[]
+}
+
+export function WorkIndex({ projects }: WorkIndexProps) {
   return (
-    <section className="px-[var(--site-pad)] py-6">
+    <section className="px-(--site-pad) py-6">
       <div className="grid gap-x-2 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
-        {workProjects.map((project, index) => (
+        {projects.map((project, index) => (
           <Reveal
             className="group block"
             delay={(index % 3) * 90}
             key={`${project.title}-${index}`}
           >
             <Link href={project.href}>
-              <div className="relative aspect-[4/3] overflow-hidden bg-warm">
+              <div className="relative aspect-4/3 overflow-hidden bg-warm">
                 <Image
                   alt=""
                   className="object-cover transition duration-700 group-hover:scale-105"

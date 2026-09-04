@@ -1,27 +1,33 @@
 import Image from 'next/image'
 
 import { Reveal } from './reveal'
-import { featuredWork } from './site-data'
+import type { PageContent } from '@/lib/page-data'
 
-export function FeaturedWork() {
+type FeaturedWorkProps = {
+  page: PageContent
+}
+
+export function FeaturedWork({ page }: FeaturedWorkProps) {
+  const projects = page.featuredProjects ?? []
+
   return (
     <section
       className="border-b border-line/70 py-6 pb-32"
       id="featured-work"
     >
       <div className="mb-6 flex items-end justify-between gap-6 border-b-[0.5px] px-[var(--site-pad)] pb-2 text-xs uppercase">
-        <h2 className="text-2xl">Featured Work</h2>
+        <h2 className="text-2xl">{page.featuredTitle}</h2>
 
         <a
           className="underline! underline-offset-4 hover:text-slate-500!"
-          href="/work"
+          href={page.featuredLinkHref ?? '/work'}
         >
-          See more work
+          {page.featuredLinkLabel}
         </a>
       </div>
 
       <div className="mx-[var(--site-pad)] grid gap-2 gap-y-8 overflow-hidden md:grid-cols-2">
-        {featuredWork.map((project, index) => (
+        {projects.map((project, index) => (
           <Reveal
             className="group bg-paper"
             delay={(index % 2) * 100}

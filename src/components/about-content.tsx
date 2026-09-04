@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import { Reveal } from './reveal'
-import { aboutCollage, aboutStrip, clients, industries, press, services } from './site-data'
+import type { ImageStripItem, PageContent } from '@/lib/page-data'
 
 function TextList({ items, title, underline=false }: { items: string[]; title: string, underline?: boolean }) {
   return (
@@ -18,22 +18,24 @@ function TextList({ items, title, underline=false }: { items: string[]; title: s
   )
 }
 
-export function AboutStory() {
+type AboutProps = {
+  page: PageContent
+}
+
+export function AboutStory({ page }: AboutProps) {
   return (
     <>
       <section className="">
 
-        <div className="px-[var(--site-pad)] py-6 md:py-12">
+        <div className="px-(--site-pad) py-6 md:py-12">
           <Reveal>
-            <h1 className="font-serif text-4xl leading-[1.4] font-[600]">
-              <i>We believe great brands can change the course of a business.</i> Every meaningful business begins with someone who cares deeply about what they&apos;re building. Our role is to uncover what makes it worth believing in, then give that idea a distinct expression. Through strategy, identity, design, and art direction, we create brands with the character and craft to stand the test of time.
-            </h1>
+            <h1 className="whitespace-pre-line font-serif text-4xl leading-[1.4] font-semibold">{page.aboutStory}</h1>
           </Reveal>
         </div>
       </section>
 
-      <section aria-hidden="true" className="relative mx-auto mb-10 aspect-[794/473] w-[min(72vw,420px)] md:mb-14">
-        {aboutCollage.map((bird, index) => (
+      <section aria-hidden="true" className="relative mx-auto mb-10 aspect-794/473 w-[min(72vw,420px)] md:mb-14">
+        {(page.aboutCollage ?? []).map((bird, index) => (
           <Reveal className={`absolute ${bird.className}`} delay={index * 120} key={bird.image}>
             <Image
               alt=""
@@ -51,54 +53,52 @@ export function AboutStory() {
   )
 }
 
-export function AboutDetails() {
+export function AboutDetails({ page }: AboutProps) {
   return (
-    <section className="flex flex-col md:flex-row  py-8 md:py-12 flex-wrap gap-y-[64px]">
+    <section className="flex flex-col md:flex-row  py-8 md:py-12 flex-wrap gap-y-16">
         <Reveal className="space-y-6 flex-1 pt-3">
-          <p className="mb-5 text-xs uppercase px-[var(--site-pad)]">How we work</p>
+          <p className="mb-5 text-xs uppercase px-(--site-pad)">{page.howWeWorkTitle}</p>
           <hr />
-          <p className="max-w-2xl text-body-large leading-snug px-[var(--site-pad)]">
-            We work closely with founders and teams at defining moments, from ambitious new ventures
-            to thoughtful reinventions. The process is hands-on, direct, and built around finding the
-            strongest expression of the business behind the brand.
-          </p>
-          <p className="max-w-4xl text-body-large leading-snug px-[var(--site-pad)]">
-            Goodside is led by brand designer and creative director Jessica Strelioff, with a trusted
-            network of specialists brought in as each project requires.
-          </p>
+          {(page.howWeWorkParagraphs ?? []).map((item) => (
+            <p className="max-w-4xl whitespace-pre-line text-body-large leading-snug px-(--site-pad)" key={item.paragraph}>
+              {item.paragraph}
+            </p>
+          ))}
         </Reveal>
-        <TextList items={services} title="What we do" />
-        <TextList items={industries} title="Industries" />
+        <TextList items={(page.services ?? []).map((item) => item.item)} title="What we do" />
+        <TextList items={(page.industries ?? []).map((item) => item.item)} title="Industries" />
     </section>
   )
 }
 
-export function AboutLists() {
+export function AboutLists({ page }: AboutProps) {
   return (
-    <section className="grid border-b gap-y-[64px] border-line/70 py-8 md:grid-cols-2 md:py-12">
-      <TextList items={clients} title="Who we've worked with" />
-      <TextList items={press} title="Press" underline />
+    <section className="grid border-b gap-y-16 border-line/70 py-8 md:grid-cols-2 md:py-12">
+      <TextList items={(page.clients ?? []).map((item) => item.item)} title="Who we've worked with" />
+      <TextList items={(page.press ?? []).map((item) => item.item)} title="Press" underline />
     </section>
   )
 }
 
-export function AboutImageStrip() {
+export function AboutImageStrip({ page }: AboutProps) {
+  const strip = page.aboutStrip ?? []
+
   return (
-    <section className="overflow-hidden border-b border-line/70 bg-white px-[var(--site-pad)] py-14 md:py-20">
+    <section className="overflow-hidden border-b border-line/70 bg-white px-(--site-pad) py-14 md:py-20">
       <div className="grid grid-cols-3 justify-between gap-x-[9vw] gap-y-16 md:grid-cols-7 md:gap-x-[6.8vw] md:gap-y-28">
-        {aboutStrip.slice(0, 10).map((item, index) => (
+        {strip.slice(0, 10).map((item, index) => (
           <WallTile index={index} item={item} key={`${item.image}-${index}`} />
         ))}
 
-        <Reveal className="flex aspect-[114/139] items-center justify-center text-center" delay={120}>
+        <Reveal className="flex aspect-114/139 items-center justify-center text-center" delay={120}>
           <h2 className="font-serif text-[21px] leading-[1.05] md:text-lede">
-            <span className="block">Where</span>
-            <em className="block italic">great brands</em>
-            <span className="block">begin</span>
+            <span className="block">{page.imageStripHeadingTop}</span>
+            <em className="block italic">{page.imageStripHeadingEmphasis}</em>
+            <span className="block">{page.imageStripHeadingBottom}</span>
           </h2>
         </Reveal>
 
-        {aboutStrip.slice(10).map((item, index) => (
+        {strip.slice(10).map((item, index) => (
           <WallTile index={index + 10} item={item} key={`${item.image}-${index + 10}`} />
         ))}
       </div>
@@ -111,10 +111,10 @@ function WallTile({
   item,
 }: {
   index: number
-  item: (typeof aboutStrip)[number]
+  item: ImageStripItem
 }) {
   const image = (
-    <Reveal className={`relative aspect-[114/139] overflow-hidden ${item.dark ? 'bg-black' : 'bg-warm'}`} delay={(index % 7) * 70}>
+    <Reveal className={`relative aspect-114/139 overflow-hidden ${item.dark ? 'bg-black' : 'bg-warm'}`} delay={(index % 7) * 70}>
       <Image
         alt={item.alt}
         className={`transition duration-700 ${item.href ? 'group-hover:scale-105' : ''} ${item.dark ? 'object-contain p-[5%]' : 'object-cover'}`}

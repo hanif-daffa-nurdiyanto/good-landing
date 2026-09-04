@@ -1,9 +1,16 @@
 import Image from 'next/image'
 
-import { Reveal } from './reveal'
-import { projectHighlights } from './site-data'
+import type { ProjectCard } from '@/lib/page-data'
 
-export function ProjectMarquee() {
+type ProjectMarqueeProps = {
+  projects: ProjectCard[]
+}
+
+export function ProjectMarquee({ projects }: ProjectMarqueeProps) {
+  if (projects.length === 0) {
+    return null
+  }
+
   return (
     <section className="overflow-hidden border-line/70 py-10 md:py-16">
       <div
@@ -14,9 +21,9 @@ export function ProjectMarquee() {
           hover:[animation-play-state:paused]
         "
       >
-        {[...projectHighlights, ...projectHighlights].map(
+        {[...projects, ...projects].map(
           (project, index) => (
-            <Reveal
+            <div
               className="
                 group relative
                 w-[14rem] shrink-0 overflow-hidden
@@ -25,7 +32,6 @@ export function ProjectMarquee() {
                 md:w-[16vw]
                 md:hover:w-[18vw]
               "
-              delay={(index % projectHighlights.length) * 80}
               key={`${project.title}-${index}`}
             >
               <a className="block" href={project.href}>
@@ -48,7 +54,7 @@ export function ProjectMarquee() {
                   width={420}
                 />
               </a>
-            </Reveal>
+            </div>
           ),
         )}
       </div>

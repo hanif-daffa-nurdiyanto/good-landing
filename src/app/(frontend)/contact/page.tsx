@@ -1,20 +1,25 @@
 import { ContactContent } from '@/components/contact-content'
 import { PageKicker } from '@/components/page-kicker'
 import { SiteHeader } from '@/components/site-header'
+import { getContactPage, getPage } from '@/lib/page-data'
 
 export const metadata = {
   title: 'Contact → Goodside',
 }
 
-export default function ContactPage() {
+export const dynamic = 'force-dynamic'
+
+export default async function ContactPage() {
+  const [page, home] = await Promise.all([getContactPage(), getPage('home')])
+
   return (
     <>
-      <SiteHeader />
+      <SiteHeader contact={page} intro={home.heroCopy} />
       <PageKicker
-        copy="Selected identities for restaurants, venture firms, wellness products, climate tools, cultural places, and teams building what comes next."
-        title="Goodside"
+        copy={page.kickerCopy ?? undefined}
+        title={page.kickerTitle ?? page.title}
       />
-      <ContactContent />
+      <ContactContent page={page} />
     </>
   )
 }
